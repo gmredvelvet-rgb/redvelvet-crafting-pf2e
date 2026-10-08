@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="36%" r="74%"><stop offset="0" stop-color="#4b315d"/><stop offset=".58" stop-color="#18121f"/><stop offset="1" stop-color="#050506"/></radialGradient>
+    <linearGradient id="gem" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbffff"/><stop offset=".28" stop-color="#77f1e7"/><stop offset=".58" stop-color="#6c58d8"/><stop offset="1" stop-color="#22103f"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffeaa2"/><stop offset=".5" stop-color="#b77a2d"/><stop offset="1" stop-color="#5a2e12"/></linearGradient>
+    <filter id="s" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#000" flood-opacity=".65"/></filter>
+  </defs>
+  <rect width="256" height="256" rx="28" fill="url(#bg)"/>
+  <path d="M22 26h212v204H22z" rx="22" fill="none" stroke="#9d7840" stroke-width="8"/>
+  <g filter="url(#s)">
+    <path d="M61 96l34-39h66l34 39-67 96z" fill="url(#gem)" stroke="#090818" stroke-width="7"/>
+    <path d="M95 57l33 135 33-135M61 96h134M84 96l44-39 44 39" fill="none" stroke="#eafcff" stroke-width="5" opacity=".65"/>
+    <path d="M70 178c25 25 92 25 116 0" fill="none" stroke="url(#gold)" stroke-width="15" stroke-linecap="round"/>
+    <circle cx="62" cy="170" r="13" fill="url(#gold)" stroke="#170c05" stroke-width="5"/>
+    <circle cx="194" cy="170" r="13" fill="url(#gold)" stroke="#170c05" stroke-width="5"/>
+    <path d="M182 43l8 16 16 8-16 8-8 16-8-16-16-8 16-8z" fill="#fff4ad"/>
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="74%"><stop offset="0" stop-color="#3b3431"/><stop offset=".58" stop-color="#141312"/><stop offset="1" stop-color="#050505"/></radialGradient>
+    <linearGradient id="coal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b5c5d"/><stop offset=".5" stop-color="#191a1b"/><stop offset="1" stop-color="#050505"/></linearGradient>
+    <filter id="s" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#000" flood-opacity=".65"/></filter>
+  </defs>
+  <rect width="256" height="256" rx="28" fill="url(#bg)"/>
+  <path d="M22 26h212v204H22z" rx="22" fill="none" stroke="#9d7840" stroke-width="8"/>
+  <g filter="url(#s)" stroke="#070707" stroke-width="6" stroke-linejoin="round">
+    <path d="M76 76l59-27 55 40-14 64-63 27-52-38z" fill="url(#coal)"/>
+    <path d="M64 153l64-31 66 38-19 45-73 13-50-27z" fill="#202124"/>
+    <path d="M98 88l36 34 44-28M113 180l15-58M91 160l61 42" fill="none" stroke="#666" stroke-width="4" opacity=".45"/>
+    <path d="M58 207c19-18 23-33 13-51 26 11 42 36 39 66-22 3-38-2-52-15z" fill="#d45a20" opacity=".86" stroke="#3b1308"/>
+  </g>
+</svg>

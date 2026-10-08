@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="74%"><stop offset="0" stop-color="#59402c"/><stop offset=".58" stop-color="#1d1812"/><stop offset="1" stop-color="#050505"/></radialGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c99455"/><stop offset=".48" stop-color="#6b3f20"/><stop offset="1" stop-color="#26140b"/></linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ece7d8"/><stop offset=".48" stop-color="#77736b"/><stop offset="1" stop-color="#2b2927"/></linearGradient>
+    <filter id="s" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#000" flood-opacity=".65"/></filter>
+  </defs>
+  <rect width="256" height="256" rx="28" fill="url(#bg)"/>
+  <path d="M22 26h212v204H22z" rx="22" fill="none" stroke="#9d7840" stroke-width="8"/>
+  <g filter="url(#s)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M61 95h134v95c0 16-13 29-29 29H90c-16 0-29-13-29-29z" fill="url(#wood)" stroke="#130b06" stroke-width="7"/>
+    <path d="M84 95V77c0-19 17-34 44-34s44 15 44 34v18" fill="none" stroke="url(#metal)" stroke-width="13"/>
+    <path d="M78 123h100M78 155h100M104 102v101M153 102v101" stroke="#2e180c" stroke-width="5" opacity=".7"/>
+    <path d="M67 129l35-35 15 15-35 35zM147 165l42-42 18 18-42 42z" fill="url(#metal)" stroke="#100f0d" stroke-width="5"/>
+    <circle cx="129" cy="150" r="15" fill="#845028" stroke="#201006" stroke-width="5"/>
+  </g>
+</svg>
