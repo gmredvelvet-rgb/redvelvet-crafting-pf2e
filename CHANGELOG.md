@@ -7,6 +7,8 @@
 - Tres aciertos entregan el objeto; dos devuelven la mitad de las monedas, uno un tercio. Un error antes de la entrega devuelve las monedas.
 - El tesoro (monedas, gemas, objetos de arte) y los objetos sin precio no se pueden fabricar en Core.
 - API: `game.modules.get("redvelvet-crafting-pf2e").api` con `open()`, `openCore()` y `openExtended()`.
+- `/craft` funciona en Foundry v14, que envía el mensaje del chat como HTML; si el taller falla al abrir, se muestra el motivo.
+- Diálogo y audio heredados tomados de su ubicación v13+ en lugar de los globales obsoletos. Verificado en Foundry v14.
 - Primera versión publicada en GitHub.
 
 ## 1.8.1
