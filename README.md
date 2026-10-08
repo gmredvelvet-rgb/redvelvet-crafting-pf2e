@@ -25,6 +25,12 @@ game.modules.get("redvelvet-crafting-pf2e").api.openExtended();
 
 En el mini-juego aparecen tres iconos, uno tras otro; pulsa cada uno mientras brilla en dorado. Una tirada mejor alarga el brillo.
 
+## Diseño y sonidos
+
+Core y Extendido comparten el diseño de la edición D&D5e: portada del taller, tarjetas ilustradas, iconos, colores y animaciones. Core incluye búsqueda con contador y limpieza, pasos de fabricación, ficha de receta y tres golpes numerados con avisos «Ahora», «Tarde», «Acierto» y «Fallo».
+
+En los ajustes puedes activar los sonidos y elegir su volumen. Los 20 efectos locales distinguen los oficios y actividades; cada usuario controla su audio. Los botones admiten teclado, muestran el foco y respetan movimiento reducido. Las habilidades, CD por nivel, grados, competencia e inventario PF2e conservan sus reglas existentes.
+
 ## Instalación
 
 Manifest para Foundry:
@@ -41,4 +47,6 @@ El módulo usa el soft gate de Patreon de la familia Velvet: todas las funciones
 
 ## Estado de las pruebas
 
-El modo Core comparte código y pruebas automatizadas con la edición D&D5e, y su flujo completo se probó en un navegador contra un Foundry simulado. Falta la prueba en un mundo real de Foundry con GM y jugador conectados.
+Ocho pruebas locales cubren Core en adaptadores v13/v14, monedas, CD por nivel, resultados, devolución, navegación y presentación compartida. Se revisaron los menús, catálogo y ficha de receta en navegador con inventario simulado. Falta la prueba en mundos reales de Foundry v13/v14 con GM y jugador conectados; véase [validación visual y funcional](docs/VISUAL-QA.md).
+
+Para desarrollo: `npm ci`, `npm test`, `npm run check` y `npm run build`. El ZIP, manifiesto y checksums se generan en `dist`; Foundry no necesita estas dependencias de desarrollo. La versión 1.9.0 permanece como candidato en borrador hasta completar las pruebas reales.

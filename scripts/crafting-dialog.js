@@ -1,3 +1,4 @@
+import { applyWorkshopIcons } from "./presentation.js";
 /**
  * RedVelvet Crafting System — PF2e Edition
  * Adaptado de D&D5e a Pathfinder 2e por GM RedVelvet
@@ -14,6 +15,7 @@
  *  - Mensajes al chat con formato PF2e nativo
  */
 
+import { SFX_NAV, SFX_HIT, SFX_MISS, playSound, registerAudioSettings } from "./audio.js";
 import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./core-crafting.js";
 
 (() => {
@@ -21,8 +23,8 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
   const RV_ASSET_ROOT = `modules/${MODULE_ID}/assets`;
   const RV_ASSETS = {
     bg: {
-      workshop: `${RV_ASSET_ROOT}/backgrounds/rpg-crafting-hall.png`,
-      menu: `${RV_ASSET_ROOT}/backgrounds/menu-original.png`,
+      workshop: `${RV_ASSET_ROOT}/backgrounds/workshop-dnd5e.png`,
+      menu: `${RV_ASSET_ROOT}/backgrounds/workshop-dnd5e.png`,
       rules: `${RV_ASSET_ROOT}/backgrounds/rules-original.jpg`,
       blacksmith: `${RV_ASSET_ROOT}/backgrounds/blacksmith-original.png`,
       alchemy: `${RV_ASSET_ROOT}/backgrounds/alchemy-original.png`,
@@ -710,41 +712,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
   // REPRODUCCIÓN DE SONIDO — usa la API de Foundry para evitar bloqueos
   // del navegador y problemas de CSP con URLs externas.
   // ─────────────────────────────────────────────────────────────────────────────
-  // PLACEHOLDER: sonidos desactivados hasta definir los archivos finales.
-  // Para reactivarlos, cambia SOUNDS_ENABLED a true y ajusta las rutas de
-  // SFX_NAV / SFX_HIT / SFX_MISS de más abajo.
-  const SOUNDS_ENABLED = false;
-
-  function playSound(src, volume = 0.8) {
-    if (!SOUNDS_ENABLED) return;
-    try {
-      (globalThis.foundry?.audio?.AudioHelper ?? globalThis.AudioHelper).play({ src, volume, loop: false }, false);
-    } catch {
-      new Audio(src).play().catch(() => {});
-    }
-  }
-
-  const SFX_NAV = {
-    select: "assets/sfx random/y2mate.com - Victorian Shopkeepers Bell.mp3",
-    back:   "assets/sfx random/drop.mp3",
-  };
-
-  const SFX_HIT = {
-    herreria:           "assets/sfx random/anvil.mp3",
-    alquimia:           "assets/SFXBG3/fireball-baldur-s-gate-3.mp3",
-    joyeria:            "modules/dice-so-nice/sfx/sounds/sparkles.mp3",
-    "trabajo-con-piel": "assets/sfx random/HEAL.mp3",
-    "equipo-vario":     "assets/sfx random/y2mate.com - Wooden Treasure Chest Opening  Free Sound Effect.mp3",
-  };
-
-  const SFX_MISS = {
-    herreria:           "assets/sfx random/y2mate.com - Stone Slide Sound Effect.mp3",
-    alquimia:           "assets/SFXBG3/poison-spray-baldur-s-gate-3.mp3",
-    joyeria:            "modules/dice-so-nice/sfx/sounds/hit_glass.mp3",
-    "trabajo-con-piel": "modules/dice-so-nice/sfx/sounds/darkness.mp3",
-    "equipo-vario":     "modules/maestro/sounds/failure.mp3",
-  };
-
+  // Audio local compartido: configuración individual en audio.js.
   // ─────────────────────────────────────────────────────────────────────────────
   // INTERNACIONALIZACIÓN — ES / EN
   // ─────────────────────────────────────────────────────────────────────────────
@@ -1672,13 +1640,10 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
             max-width: 340px;
           }
           .rv-cat-btn {
-            min-height: 86px;
-            padding: 10px 10px 9px;
-            border-radius: 8px;
-            border: 1px solid rgba(190,142,68,0.55);
-            background:
-              linear-gradient(180deg, rgba(86,57,31,0.84), rgba(22,14,9,0.92)),
-              radial-gradient(circle at 50% 0%, rgba(232,201,106,0.2), transparent 58%);
+            padding: 14px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(232,201,106,0.3);
+            background: rgba(20,14,6,0.75);
             color: #f0e6d3;
             font-size: 14px;
             cursor: pointer;
@@ -1688,45 +1653,14 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
             align-items: center;
             gap: 6px;
             backdrop-filter: blur(4px);
-            box-shadow:
-              inset 0 1px 0 rgba(255,232,172,0.18),
-              inset 0 -10px 22px rgba(0,0,0,0.36),
-              0 4px 10px rgba(0,0,0,0.35);
           }
-          .rv-cat-btn .cat-icon { font-size: 26px; line-height: 1; }
-          .rv-img-icon {
-            width: 42px;
-            height: 42px;
-            object-fit: contain;
-            border-radius: 9px;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.55));
-            flex: 0 0 auto;
-          }
-          .rv-cat-btn .rv-img-icon {
-            width: 46px;
-            height: 46px;
-            padding: 2px;
-            background: linear-gradient(180deg, rgba(245,211,126,0.14), rgba(0,0,0,0.12));
-            border: 1px solid rgba(232,201,106,0.24);
-          }
-          .rv-cat-btn .cat-label {
-            font-size: 12px;
-            font-weight: 700;
-            text-align: center;
-            color: #f4e4c5;
-            text-shadow: 0 1px 2px #000;
-            letter-spacing: 0;
-          }
+          .rv-cat-btn .cat-icon { font-size: 26px; }
+          .rv-cat-btn .cat-label { font-size: 12px; font-weight: 600; text-align: center; }
           .rv-cat-btn:hover:not(:disabled) {
-            background:
-              linear-gradient(180deg, rgba(112,77,39,0.94), rgba(28,17,10,0.95)),
-              radial-gradient(circle at 50% 0%, rgba(232,201,106,0.35), transparent 62%);
+            background: rgba(232,201,106,0.18);
             border-color: #e8c96a;
             transform: translateY(-2px);
-            box-shadow:
-              inset 0 1px 0 rgba(255,232,172,0.28),
-              inset 0 -10px 22px rgba(0,0,0,0.42),
-              0 6px 18px rgba(232,201,106,0.2);
+            box-shadow: 0 4px 16px rgba(232,201,106,0.25);
             color: #e8c96a;
           }
           .rv-cat-btn:disabled {
@@ -1891,16 +1825,15 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
           /* Botón forjar */
           #rv-btn-forge {
             padding: 10px 28px;
-            background: linear-gradient(180deg, #f0d47a, #b87522 48%, #5b2d13);
-            border: 1px solid #f1d88a;
-            border-radius: 7px;
+            background: linear-gradient(135deg, #c8870a, #e8c96a);
+            border: none;
+            border-radius: 8px;
             color: #1a0e00;
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
-            text-shadow: 0 1px 0 rgba(255,236,174,0.45);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -5px 12px rgba(0,0,0,0.35), 0 0 18px rgba(232,201,106,0.25);
+            box-shadow: 0 0 18px rgba(232,201,106,0.3);
           }
           #rv-btn-forge:hover { transform: scale(1.04); box-shadow: 0 0 28px rgba(232,201,106,0.5); }
           #rv-btn-forge:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
@@ -1916,21 +1849,17 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
           .rv-forge-icon {
             width: 74px;
             height: 74px;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            border: 2px solid rgba(232,201,106,0.32);
+            border: 2px solid rgba(255,255,255,0.1);
             transition: box-shadow 0.08s;
-            background: linear-gradient(180deg, rgba(68,43,22,0.85), rgba(10,8,6,0.95));
-            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.6), 0 6px 12px rgba(0,0,0,0.45);
           }
           .rv-forge-icon img {
             width: 100%; height: 100%;
-            object-fit: contain;
-            border-radius: 8px;
-            padding: 6px;
-            box-sizing: border-box;
+            object-fit: cover;
+            border-radius: 10px;
           }
           .rv-forge-icon .rv-bar {
             position: absolute;
@@ -2054,7 +1983,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
           #rv-gather-bg {
             position: absolute;
             inset: 0;
-            background-image: url('${RV_ASSETS.bg.wilds}');
+            background-image: url('${RV_ASSETS.bg.equipment}');
             background-size: cover;
             background-position: center;
             filter: brightness(0.35);
@@ -2433,7 +2362,6 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
           }
           .rv-lvl-btn {
             min-width: 0;
-            min-height: 34px;
             padding: 6px 14px;
             font-size: 12px;
           }
@@ -2662,57 +2590,31 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
           #rv-scav-result.ok   { background: rgba(74,222,128,0.12); border: 1px solid #4ade80; }
           #rv-scav-result.fail { background: rgba(248,113,113,0.1); border: 1px solid #f87171; }
 
-          .rv-fert-btn {
-            min-height: 32px;
-            flex-direction: row;
-          }
-
-          #rv-btn-gather-start,
-          #rv-btn-convert-do,
-          #rv-btn-build-start,
-          #rv-btn-salvage,
-          #rv-btn-struct-start,
-          #rv-btn-farm-create,
-          #rv-btn-farm-start,
-          #rv-btn-farm-daily,
-          #rv-btn-scav-start,
-          .rv-take-btn {
-            border: 1px solid rgba(255,231,161,0.55) !important;
-            border-radius: 7px !important;
-            background:
-              linear-gradient(180deg, rgba(242,208,116,0.95), rgba(150,91,34,0.98) 48%, rgba(69,35,17,1)) !important;
-            color: #1c0f05 !important;
-            text-shadow: 0 1px 0 rgba(255,237,181,0.48);
-            box-shadow:
-              inset 0 1px 0 rgba(255,255,255,0.25),
-              inset 0 -5px 12px rgba(0,0,0,0.36),
-              0 4px 12px rgba(0,0,0,0.34),
-              0 0 16px rgba(232,201,106,0.18) !important;
-          }
-          #rv-btn-salvage {
-            background:
-              linear-gradient(180deg, rgba(223,128,105,0.95), rgba(133,45,35,0.98) 48%, rgba(55,17,15,1)) !important;
-            color: #260907 !important;
-          }
-          #rv-btn-struct-start {
-            background:
-              linear-gradient(180deg, rgba(191,173,230,0.95), rgba(102,83,154,0.98) 48%, rgba(43,32,77,1)) !important;
-            color: #120b21 !important;
-          }
-          #rv-btn-gather-start,
-          #rv-btn-farm-create,
-          #rv-btn-farm-start,
-          #rv-btn-farm-daily {
-            background:
-              linear-gradient(180deg, rgba(170,219,117,0.95), rgba(86,136,48,0.98) 48%, rgba(30,63,22,1)) !important;
-            color: #071d07 !important;
-          }
-
           /* Scroll custom */
           #rv-crafting-root ::-webkit-scrollbar { width: 5px; }
           #rv-crafting-root ::-webkit-scrollbar-track { background: transparent; }
           #rv-crafting-root ::-webkit-scrollbar-thumb { background: #554; border-radius: 3px; }
-        </style>
+
+          .rv-img-icon {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            border-radius: 9px;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.55));
+            flex: 0 0 auto;
+          }
+          .rv-cat-btn .rv-img-icon {
+            width: 46px;
+            height: 46px;
+            padding: 2px;
+            background: linear-gradient(180deg, rgba(245,211,126,0.14), rgba(0,0,0,0.12));
+            border: 1px solid rgba(232,201,106,0.24);
+          }
+
+          .rv-fert-btn {
+            min-height: 32px;
+            flex-direction: row;
+          }</style>
 
         <div id="rv-crafting-root">
 
@@ -2880,7 +2782,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
               <div id="rv-forge-icons"></div>
 
               <!-- Resultado -->
-              <div id="rv-result-box"></div>
+              <div id="rv-result-box" role="status" aria-live="polite"></div>
 
             </div>
 
@@ -2959,7 +2861,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
                 </div>
 
                 <div id="rv-gather-icons"></div>
-                <div id="rv-gather-result"></div>
+                <div id="rv-gather-result" role="status" aria-live="polite"></div>
               </div>
             </div>
 
@@ -2992,7 +2894,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
                 <div class="rv-stat-row" id="rv-build-costs" style="justify-content:center;"></div>
                 <button id="rv-btn-build-start" style="margin-top:12px;">🔨 Construir</button>
                 <div id="rv-build-icons"></div>
-                <div id="rv-build-result"></div>
+                <div id="rv-build-result" role="status" aria-live="polite"></div>
               </div>
             </div>
 
@@ -3088,7 +2990,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
                 <div class="rv-stat-row" id="rv-struct-costs" style="justify-content:center;"></div>
                 <button id="rv-btn-struct-start" style="margin-top:12px;">🔨 Construir</button>
                 <div id="rv-struct-icons"></div>
-                <div id="rv-struct-result"></div>
+                <div id="rv-struct-result" role="status" aria-live="polite"></div>
               </div>
             </div>
 
@@ -3129,7 +3031,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
               </div>
 
               <div id="rv-farm-log"></div>
-              <div id="rv-farm-result"></div>
+              <div id="rv-farm-result" role="status" aria-live="polite"></div>
             </div>
 
             <button class="rv-back-btn" id="rv-btn-back-farm">⬅️ Menú</button>
@@ -3147,7 +3049,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
 
               <button id="rv-btn-scav-start">🔪 Iniciar Despiece</button>
               <div id="rv-scav-icons"></div>
-              <div id="rv-scav-result"></div>
+              <div id="rv-scav-result" role="status" aria-live="polite"></div>
             </div>
 
             <button class="rv-back-btn" id="rv-btn-back-scav">⬅️ Menú</button>
@@ -3161,8 +3063,8 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
         html.closest(".app").css({
           width: "430px",
           height: "720px",
-          maxWidth: "430px",
-          maxHeight: "720px",
+          maxWidth: "calc(100vw - 24px)",
+          maxHeight: "calc(100vh - 48px)",
         });
 
         // ── Verificar actor seleccionado ──
@@ -3179,80 +3081,16 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
         }
 
         // ── Aplicar idioma inicial ──
-        applyLang(html);
-        applyArtIcons(html);
+        applyLang(html); applyWorkshopIcons(html);
+
 
         // ── Selector de idioma ──
         html.find("#rv-lang-toggle").on("click", () => {
           currentLang = currentLang === "es" ? "en" : "es";
           try { localStorage.setItem("rv-crafting-lang", currentLang); } catch { /* */ }
-          applyLang(html);
-          applyArtIcons(html);
+          applyLang(html); applyWorkshopIcons(html);
+
         });
-
-        function applyArtIcons(html) {
-          const categoryIcons = {
-            herreria: RV_ASSETS.icon.blacksmith,
-            alquimia: RV_ASSETS.icon.alchemy,
-            joyeria: RV_ASSETS.icon.jewelry,
-            "trabajo-con-piel": RV_ASSETS.icon.leatherwork,
-            "equipo-vario": RV_ASSETS.icon.crafting,
-            recoleccion: RV_ASSETS.icon.food,
-            construcciones: RV_ASSETS.icon.construction,
-            edificios: RV_ASSETS.icon.structure,
-            reciclaje: RV_ASSETS.icon.charcoal,
-            cultivos: RV_ASSETS.icon.farm,
-            monstruos: RV_ASSETS.icon.monsterParts,
-            reglas: RV_ASSETS.icon.crafting,
-          };
-          const gatherIcons = {
-            comida: RV_ASSETS.icon.food,
-            construccion: RV_ASSETS.icon.construction,
-            "alquimia-rec": RV_ASSETS.icon.alchemy,
-            "herreria-rec": RV_ASSETS.icon.blacksmith,
-            "joyeria-rec": RV_ASSETS.icon.jewelry,
-            "piel-rec": RV_ASSETS.icon.leatherwork,
-            "vario-rec": RV_ASSETS.icon.crafting,
-            "abono-rec": RV_ASSETS.icon.fertilizer,
-            "madera-rec": RV_ASSETS.icon.wood,
-          };
-          const buildIcons = {
-            tablas: RV_ASSETS.icon.planks,
-            carbon: RV_ASSETS.icon.charcoal,
-            piso: RV_ASSETS.icon.construction,
-            pared: RV_ASSETS.icon.construction,
-            techo: RV_ASSETS.icon.construction,
-            puerta: RV_ASSETS.icon.structure,
-            ventana: RV_ASSETS.icon.alchemy,
-            "mesa-trabajo": RV_ASSETS.icon.crafting,
-            muebles: RV_ASSETS.icon.planks,
-            escaleras: RV_ASSETS.icon.planks,
-          };
-
-          for (const [key, src] of Object.entries(categoryIcons)) {
-            const $btn = html.find(`.rv-cat-btn[data-category="${key}"]`);
-            const $slot = $btn.find(".cat-icon").first();
-            if ($slot.length) $slot.html(rvIcon(src, key));
-            else if (!$btn.children(".rv-img-icon").length) $btn.prepend(rvIcon(src, key));
-          }
-          for (const [key, src] of Object.entries(gatherIcons)) {
-            const $btn = html.find(`.rv-gather-btn[data-gather="${key}"]`);
-            const $slot = $btn.find(".cat-icon").first();
-            if ($slot.length) $slot.html(rvIcon(src, key));
-            else if (!$btn.children(".rv-img-icon").length) $btn.prepend(rvIcon(src, key));
-          }
-          for (const [key, src] of Object.entries(buildIcons)) {
-            const $btn = html.find(`.rv-build-btn[data-build="${key}"]`);
-            if (!$btn.children(".rv-img-icon").length) $btn.prepend(rvIcon(src, key));
-          }
-          html.find(".rv-struct-btn").each((_, btn) => {
-            const $btn = $(btn);
-            if (!$btn.children(".rv-img-icon").length) $btn.prepend(rvIcon(RV_ASSETS.icon.structure, "structure"));
-          });
-          html.find(".rv-cat-btn .cat-label").each((_, label) => {
-            label.textContent = (label.textContent ?? "").replace(/^[^A-Za-z0-9]+/u, "").trim();
-          });
-        }
 
         // ── Datos de Crafting del actor ──
         const craftingSkill = getCraftingData(actor);
@@ -3285,7 +3123,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
 
         // ── NAVEGACIÓN: Selección de categoría ──
         html.find("#rv-category-screen .rv-cat-btn").on("click", function () {
-          const cat = $(this).data("category");
+          const cat = $(this).data("category"); html[0].scrollTop = 0;
           if (cat === "reglas") {
             html.find("#rv-category-screen").hide();
             html.find("#rv-rules-screen").show();
@@ -3391,14 +3229,14 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
         // Volver desde reglas — delegado porque applyLang reconstruye el contenido
         html.find("#rv-rules-screen").on("click", "#rv-btn-back-rules", () => {
           html.find("#rv-rules-screen").hide();
-          html.find("#rv-category-screen").show();
+          html.find("#rv-category-screen").show(); html[0].scrollTop = 0;
           playSound(SFX_NAV.back);
         });
 
         // Volver desde forja
         html.find("#rv-btn-back-forge").on("click", () => {
           html.find("#rv-forge-screen").hide();
-          html.find("#rv-category-screen").show();
+          html.find("#rv-category-screen").show(); html[0].scrollTop = 0;
           draggedItem = null;
           playSound(SFX_NAV.back);
         });
@@ -3411,7 +3249,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
         html.find("#rv-btn-back-gather").on("click", () => {
           if (gatherPlaying) return;
           html.find("#rv-gather-screen").hide();
-          html.find("#rv-category-screen").show();
+          html.find("#rv-category-screen").show(); html[0].scrollTop = 0;
           selectedGatherType = null;
           playSound(SFX_NAV.back);
         });
@@ -3599,20 +3437,21 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
           let iconsDone = 0, hits = 0;
 
           function spawnGatherIcon() {
-            const $icon = $(`<div class="rv-forge-icon">
+            const $icon = $(`<button type="button" class="rv-forge-icon">
               <img src="${cfg.icon}" />
               <div class="rv-bar"></div>
               <span class="rv-countdown"></span>
-            </div>`);
+            </button>`);
             $gIcons.append($icon);
+            $icon[0]?.focus({preventScroll:true});
 
             const $bar = $icon.find(".rv-bar");
             const $cd = $icon.find(".rv-countdown");
-            let progress = 0;
+            let progress = 0; const began = performance.now();
             let resolved = false;
 
             const interval = setInterval(() => {
-              progress += 20;
+              progress = performance.now() - began;
               $bar.css("width", `${(progress / TIME_LIMIT) * 100}%`);
               $cd.text(Math.ceil((TIME_LIMIT - progress) / 1000));
 
@@ -3620,7 +3459,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
               $icon.css("box-shadow", inWindow ? "0 0 20px 6px rgba(232,201,106,0.8)" : "none");
 
               if (progress >= TIME_LIMIT && !resolved) {
-                resolved = true;
+                resolved = true; $icon.prop("disabled",true);
                 clearInterval(interval);
                 $icon.addClass("miss");
                 playSound(SFX_MISS[cfg.sfxCat]);
@@ -3631,8 +3470,9 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
 
             $icon.on("click", () => {
               if (resolved) return;
-              resolved = true;
+              resolved = true; $icon.prop("disabled",true);
               clearInterval(interval);
+              progress = performance.now() - began;
               const inWindow = progress >= HIT_START && progress <= HIT_END;
               if (inWindow) {
                 hits++;
@@ -3709,7 +3549,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
         html.find("#rv-btn-back-build").on("click", () => {
           if (buildPlaying) return;
           html.find("#rv-build-screen").hide();
-          html.find("#rv-category-screen").show();
+          html.find("#rv-category-screen").show(); html[0].scrollTop = 0;
           selectedBuildPiece = null;
           playSound(SFX_NAV.back);
         });
@@ -3835,20 +3675,21 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
           let iconsDone = 0, hits = 0;
 
           function spawnBuildIcon() {
-            const $icon = $(`<div class="rv-forge-icon">
+            const $icon = $(`<button type="button" class="rv-forge-icon">
               <img src="${RV_ASSETS.icon.construction}" />
               <div class="rv-bar"></div>
               <span class="rv-countdown"></span>
-            </div>`);
+            </button>`);
             $bIcons.append($icon);
+            $icon[0]?.focus({preventScroll:true});
 
             const $bar = $icon.find(".rv-bar");
             const $cd = $icon.find(".rv-countdown");
-            let progress = 0;
+            let progress = 0; const began = performance.now();
             let resolved = false;
 
             const interval = setInterval(() => {
-              progress += 20;
+              progress = performance.now() - began;
               $bar.css("width", `${(progress / TIME_LIMIT) * 100}%`);
               $cd.text(Math.ceil((TIME_LIMIT - progress) / 1000));
 
@@ -3856,7 +3697,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
               $icon.css("box-shadow", inWindow ? "0 0 20px 6px rgba(232,201,106,0.8)" : "none");
 
               if (progress >= TIME_LIMIT && !resolved) {
-                resolved = true;
+                resolved = true; $icon.prop("disabled",true);
                 clearInterval(interval);
                 $icon.addClass("miss");
                 playSound(SFX_MISS["herreria"]);
@@ -3867,8 +3708,9 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
 
             $icon.on("click", () => {
               if (resolved) return;
-              resolved = true;
+              resolved = true; $icon.prop("disabled",true);
               clearInterval(interval);
+              progress = performance.now() - began;
               const inWindow = progress >= HIT_START && progress <= HIT_END;
               if (inWindow) {
                 hits++;
@@ -3977,7 +3819,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
         html.find("#rv-btn-back-struct").on("click", () => {
           if (structPlaying) return;
           html.find("#rv-struct-screen").hide();
-          html.find("#rv-category-screen").show();
+          html.find("#rv-category-screen").show(); html[0].scrollTop = 0;
           selectedStruct = null;
           playSound(SFX_NAV.back);
         });
@@ -4150,20 +3992,21 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
           let iconsDone = 0, hits = 0;
 
           function spawnStructIcon() {
-            const $icon = $(`<div class="rv-forge-icon">
+            const $icon = $(`<button type="button" class="rv-forge-icon">
               <img src="${RV_ASSETS.icon.structure}" />
               <div class="rv-bar"></div>
               <span class="rv-countdown"></span>
-            </div>`);
+            </button>`);
             $sIcons.append($icon);
+            $icon[0]?.focus({preventScroll:true});
 
             const $bar = $icon.find(".rv-bar");
             const $cd = $icon.find(".rv-countdown");
-            let progress = 0;
+            let progress = 0; const began = performance.now();
             let resolved = false;
 
             const interval = setInterval(() => {
-              progress += 20;
+              progress = performance.now() - began;
               $bar.css("width", `${(progress / TIME_LIMIT) * 100}%`);
               $cd.text(Math.ceil((TIME_LIMIT - progress) / 1000));
 
@@ -4171,7 +4014,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
               $icon.css("box-shadow", inWindow ? "0 0 20px 6px rgba(232,201,106,0.8)" : "none");
 
               if (progress >= TIME_LIMIT && !resolved) {
-                resolved = true;
+                resolved = true; $icon.prop("disabled",true);
                 clearInterval(interval);
                 $icon.addClass("miss");
                 playSound(SFX_MISS["herreria"]);
@@ -4182,8 +4025,9 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
 
             $icon.on("click", () => {
               if (resolved) return;
-              resolved = true;
+              resolved = true; $icon.prop("disabled",true);
               clearInterval(interval);
+              progress = performance.now() - began;
               const inWindow = progress >= HIT_START && progress <= HIT_END;
               if (inWindow) {
                 hits++;
@@ -4300,7 +4144,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
         // Volver desde reciclaje
         html.find("#rv-btn-back-salvage").on("click", () => {
           html.find("#rv-salvage-screen").hide();
-          html.find("#rv-category-screen").show();
+          html.find("#rv-category-screen").show(); html[0].scrollTop = 0;
           salvageItem = null;
           playSound(SFX_NAV.back);
         });
@@ -4433,7 +4277,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
         html.find("#rv-btn-back-farm").on("click", () => {
           if (farmBusy) return;
           html.find("#rv-farm-screen").hide();
-          html.find("#rv-category-screen").show();
+          html.find("#rv-category-screen").show(); html[0].scrollTop = 0;
           playSound(SFX_NAV.back);
         });
 
@@ -4671,7 +4515,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
         html.find("#rv-btn-back-scav").on("click", () => {
           if (scavPlaying) return;
           html.find("#rv-scav-screen").hide();
-          html.find("#rv-category-screen").show();
+          html.find("#rv-category-screen").show(); html[0].scrollTop = 0;
           playSound(SFX_NAV.back);
         });
 
@@ -4737,20 +4581,21 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
           let iconsDone = 0, hits = 0;
 
           function spawnScavIcon() {
-            const $icon = $(`<div class="rv-forge-icon">
+            const $icon = $(`<button type="button" class="rv-forge-icon">
               <img src="${SCAV.icon}" />
               <div class="rv-bar"></div>
               <span class="rv-countdown"></span>
-            </div>`);
+            </button>`);
             $cIcons.append($icon);
+            $icon[0]?.focus({preventScroll:true});
 
             const $bar = $icon.find(".rv-bar");
             const $cd = $icon.find(".rv-countdown");
-            let progress = 0;
+            let progress = 0; const began = performance.now();
             let resolved = false;
 
             const interval = setInterval(() => {
-              progress += 20;
+              progress = performance.now() - began;
               $bar.css("width", `${(progress / TIME_LIMIT) * 100}%`);
               $cd.text(Math.ceil((TIME_LIMIT - progress) / 1000));
 
@@ -4758,7 +4603,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
               $icon.css("box-shadow", inWindow ? "0 0 20px 6px rgba(232,201,106,0.8)" : "none");
 
               if (progress >= TIME_LIMIT && !resolved) {
-                resolved = true;
+                resolved = true; $icon.prop("disabled",true);
                 clearInterval(interval);
                 $icon.addClass("miss");
                 playSound(SFX_MISS[SCAV.sfxCat]);
@@ -4769,8 +4614,9 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
 
             $icon.on("click", () => {
               if (resolved) return;
-              resolved = true;
+              resolved = true; $icon.prop("disabled",true);
               clearInterval(interval);
+              progress = performance.now() - began;
               const inWindow = progress >= HIT_START && progress <= HIT_END;
               if (inWindow) {
                 hits++;
@@ -5004,20 +4850,20 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
             let iconsDone = 0, hits = 0;
 
             function spawnIcon() {
-              const $icon = $(`<div class="rv-forge-icon">
+              const $icon = $(`<button type="button" class="rv-forge-icon">
                 <img src="${iconSrcs[selectedCategory]}" />
                 <div class="rv-bar"></div>
                 <span class="rv-countdown"></span>
-              </div>`);
-              $icons.append($icon);
+              </button>`);
+              $icons.append($icon); $icon[0]?.focus({preventScroll:true});
 
               const $bar = $icon.find(".rv-bar");
               const $cd = $icon.find(".rv-countdown");
-              let progress = 0;
+              let progress = 0; const began = performance.now();
               let resolved = false;
 
               const interval = setInterval(() => {
-                progress += 20;
+                progress = performance.now() - began;
                 $bar.css("width", `${(progress / TIME_LIMIT) * 100}%`);
                 $cd.text(Math.ceil((TIME_LIMIT - progress) / 1000));
 
@@ -5025,7 +4871,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
                 $icon.css("box-shadow", inWindow ? "0 0 20px 6px rgba(232,201,106,0.8)" : "none");
 
                 if (progress >= TIME_LIMIT && !resolved) {
-                  resolved = true;
+                  resolved = true; $icon.prop("disabled",true);
                   clearInterval(interval);
                   $icon.addClass("miss");
                   playSound(SFX_MISS[selectedCategory]);
@@ -5036,8 +4882,9 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
 
               $icon.on("click", () => {
                 if (resolved) return;
-                resolved = true;
+                resolved = true; $icon.prop("disabled",true);
                 clearInterval(interval);
+                progress = performance.now() - began;
                 const inWindow = progress >= HIT_START && progress <= HIT_END;
                 if (inWindow) {
                   hits++;
@@ -5136,6 +4983,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
       close: () => {},
     }); // end Dialog
 
+    craftingDialog.options.classes = [...(craftingDialog.options.classes ?? []), "rv-crafting-dialog"];
     craftingDialog.options.width = 430;
     craftingDialog.options.height = 720;
     craftingDialog.render(true);
@@ -5193,6 +5041,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
     sound: (kind, category) => playSound(kind === "hit" ? SFX_HIT[category] : kind === "miss" ? SFX_MISS[category] : SFX_NAV[kind]),
   };
   registerCoreMode(MODULE_ID);
+  Hooks.once("init",registerAudioSettings);
 
   /** Opens the workshop the GM chose in the settings; `options.mode` forces one. */
   function openCrafting(options = {}) {

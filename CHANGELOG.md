@@ -2,6 +2,12 @@
 
 ## 1.9.0
 
+- Talleres Core y Extendido con el mismo diseño que D&D5e: portada, tarjetas ilustradas, iconos, colores y animaciones.
+- Core incorpora búsqueda con contador y limpieza, pasos de receta/preparación/fabricación y tres golpes numerados con avisos de precisión.
+- 20 sonidos locales por oficio y actividad, con activación y volumen por usuario.
+- Mini-juegos del taller Extendido con botones de teclado, foco visible y medición del tiempo transcurrido; se conservan fórmulas y reglas PF2e.
+- Pruebas v13/v14, verificación de recursos, CI y empaquetado reproducible del candidato.
+
 - Modo Core: taller sencillo y nuevo modo por defecto. El jugador elige un oficio, busca el objeto en los compendios que puede ver (o lo arrastra), paga la mitad de su precio en monedas, tira Artesanía y juega el mini-juego de tres golpes.
 - Ajuste de mundo "Modo de crafteo" para elegir entre Core y Extendido (el taller completo de siempre).
 - Tres aciertos entregan el objeto; dos devuelven la mitad de las monedas, uno un tercio. Un error antes de la entrega devuelve las monedas.

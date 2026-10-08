@@ -48,6 +48,7 @@
   ],
   "license": "MIT",
   "styles": [
+    "styles/crafting.css",
     "styles/core-crafting.css",
     "styles/license.css"
   ],
