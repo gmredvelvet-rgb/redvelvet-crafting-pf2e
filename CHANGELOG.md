@@ -15,6 +15,7 @@
 - API: `game.modules.get("redvelvet-crafting-pf2e").api` con `open()`, `openCore()` y `openExtended()`.
 - `/craft` funciona en Foundry v14, que envía el mensaje del chat como HTML; si el taller falla al abrir, se muestra el motivo.
 - Diálogo y audio heredados tomados de su ubicación v13+ en lugar de los globales obsoletos. Verificado en Foundry v14.
+- Compatibilidad declarada: Foundry v13 como mínimo y 14.999 como máximo (Velvet License Hub ya exigía v13).
 - Primera versión publicada en GitHub.
 
 ## 1.8.1

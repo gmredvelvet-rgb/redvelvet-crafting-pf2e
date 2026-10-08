@@ -12,5 +12,5 @@ function walk(path) {for(const file of fs.readdirSync(path,{withFileTypes:true})
 walk("scripts");
 const source=fs.readFileSync("scripts/crafting-dialog.js","utf8");
 if(/https:\/\/(files.catbox.moe|i.pinimg.com)|assets\/sfx random|SFXBG3/.test(source))throw Error("External legacy assets or fallback dice remain");
-if(manifest.compatibility.minimum!=="12" || manifest.compatibility.verified!=="14")throw Error("Incorrect Foundry compatibility");
+if(manifest.compatibility.minimum!=="13" || manifest.compatibility.verified!=="14" || manifest.compatibility.maximum!=="14.999")throw Error("Incorrect Foundry compatibility");
 console.log(`Checked ${files} runtime references, JSON and JavaScript syntax. No remote art or third-party audio dependencies.`);

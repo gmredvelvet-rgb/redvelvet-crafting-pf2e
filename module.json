@@ -5,8 +5,9 @@
   "description": "🧰 RedVelvet Crafting System para Pathfinder 2e.\n\nUn sistema interactivo de crafteo adaptado nativamente al reglamento de PF2e: usa la habilidad Crafting (INT), respeta los DCs por nivel de objeto, consume materiales propios de cada oficio y soporta rangos de competencia (Trained/Expert/Master/Legendary).\n\nCada categoría de oficio tiene mini-juego de destreza, sonidos temáticos y resultados en grados de éxito (Critical Success, Success, Failure, Critical Failure) según PF2e.\n\n🔍 Características:\n🎮 Mini-juego con 4 grados de éxito (PF2e nativo)\n🛠️ Categorías: Herrería, Alquimia, Joyería, Piel/Tela, Equipo Vario\n🧱 Materiales propios por categoría (Blacksmith/Alchemy/Jewelry/Leatherwork/Crafting Materials)\n🌿 Recolección: Comida (Supervivencia), Construcción (Atletismo), Alquimia (Naturaleza)\n📊 DC basado en nivel del objeto (tabla oficial PF2e)\n🎯 Tirada de Crafting skill con modificadores\n💬 Mensajes al chat con grados de éxito\n🎵 Sonidos temáticos por categoría",
   "version": "1.9.0",
   "compatibility": {
-    "minimum": "12",
-    "verified": "14"
+    "minimum": "13",
+    "verified": "14",
+    "maximum": "14.999"
   },
   "relationships": {
     "systems": [
