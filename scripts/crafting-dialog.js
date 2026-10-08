@@ -718,7 +718,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
   function playSound(src, volume = 0.8) {
     if (!SOUNDS_ENABLED) return;
     try {
-      AudioHelper.play({ src, volume, loop: false }, false);
+      (globalThis.foundry?.audio?.AudioHelper ?? globalThis.AudioHelper).play({ src, volume, loop: false }, false);
     } catch {
       new Audio(src).play().catch(() => {});
     }
@@ -1610,7 +1610,9 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
 
   // ─────────────────────────────────────────────────────────────────────────────
   function openCraftingDialog() {
-    let craftingDialog = new Dialog({
+    // v13+ keeps the V1 dialog under foundry.appv1; the bare global is deprecated.
+    const LegacyDialog = globalThis.foundry?.appv1?.api?.Dialog ?? globalThis.Dialog;
+    let craftingDialog = new LegacyDialog({
       title: "RedVelvet — Crafteo PF2e",
       content: `
         <style>
@@ -5205,8 +5207,12 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
   });
 
   Hooks.on("chatMessage", (chatLog, message, chatData) => {
-    if ((message ?? "").toLowerCase().startsWith("/craft")) {
-      openCrafting();
+    // Foundry v14 sends the chat input as HTML ("<p>/craft</p>"); earlier versions send plain text.
+    const command = String(message ?? "").replace(/<[^>]*>/g, "").trim().toLowerCase();
+    if (command.startsWith("/craft")) {
+      // A failure to open must not fall through to Foundry's "not a valid chat message command".
+      try { openCrafting(); }
+      catch (error) { console.error(MODULE_ID, error); ui.notifications.error(`RedVelvet Crafting: ${error?.message ?? error}`); }
       return false;
     }
     return true;
