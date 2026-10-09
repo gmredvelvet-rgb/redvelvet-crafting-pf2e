@@ -77,6 +77,11 @@ test("PF2e extended workshop still exposes Crafting proficiency, all activities 
     assert.equal(app.element.querySelector('[data-category="herreria"]').disabled,false);
     assert.ok(app.element.querySelector('.rv-category-icon'));
     app.element.querySelector('#rv-lang-toggle').click();assert.match(app.element.querySelector('#rv-category-screen').textContent,/Blacksmith/);
+    for(const [category,label] of [['edificios','Building'],['cultivos','Farming'],['monstruos','Scavenging']]) assert.equal(app.element.querySelector(`[data-category="${category}"] .cat-label`).textContent,label);
+    const controlled=canvas.tokens.controlled,character=game.user.character,opened=f.env.dialogs.length;
+    canvas.tokens.controlled=[];game.user.character=null;
+    assert.equal(game.modules.get(MODULE_ID).api.openExtended(),undefined);assert.equal(f.env.dialogs.length,opened);
+    canvas.tokens.controlled=controlled;game.user.character=character;
     assert.ok(app.options.classes.includes('rv-crafting-dialog'));
     await f.env.seed();
     const food=f.a.items.find(item=>item.name==='Food Supplies');

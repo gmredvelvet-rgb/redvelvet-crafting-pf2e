@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.1
+
+- Taller Extendido: el botón de idioma traduce también Construcciones (Building), Cultivos (Farming) y Despiece (Scavenging).
+- Taller Extendido: sin token seleccionado ya no se abre una ventana cuyos botones no responden; se muestra el aviso y no se abre nada. Si no hay token seleccionado se usa el personaje asignado al usuario, igual que en Core.
+- `api.openExtended({actor})` acepta un actor concreto.
+
 ## 1.9.0
 
 - Talleres Core y Extendido con el mismo diseño que D&D5e: portada, tarjetas ilustradas, iconos, colores y animaciones.

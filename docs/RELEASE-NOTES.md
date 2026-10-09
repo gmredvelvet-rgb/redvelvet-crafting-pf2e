@@ -1,13 +1,13 @@
-RedVelvet Crafting PF2e 1.9.0 prepara dos talleres: Core como modo predeterminado y Extendido con los oficios y actividades existentes.
+RedVelvet Crafting PF2e 1.9.1 corrige dos fallos del taller Extendido.
 
-- Core y Extendido comparten el diseño de D&D5e: portada, tarjetas ilustradas, colores, iconos y animaciones.
-- Core muestra catálogo con búsqueda, pasos de fabricación y tres golpes numerados con avisos de precisión.
-- Se conservan Artesanía, CD por nivel, costes, inventario y reglas de competencia PF2e.
-- 20 sonidos locales por oficio y actividad, con activación y volumen individual; botones de teclado y movimiento reducido.
-- `/craft`, `api.open()`, `api.openCore()` y `api.openExtended()` siguen disponibles. El soft gate y la dependencia de Velvet License Hub se conservan.
+- **Idioma:** el botón 🌐 dejaba Construcciones, Cultivos y Despiece en español. Ahora se traducen como Building, Farming y Scavenging.
+- **Ventana sin respuesta:** al abrir el taller Extendido sin un token seleccionado aparecía la ventana, pero ningún botón funcionaba. Ahora se muestra el aviso y no se abre nada; si no hay token seleccionado se usa el personaje asignado al usuario, igual que en Core.
+- `api.openExtended({actor})` acepta un actor concreto. Core no cambia.
 
-Ocho pruebas locales aprobadas, comprobación de sintaxis/recursos y empaquetado reproducible. CI omite la comparación entre ediciones si D&D5e no está disponible. La revisión visual del navegador utiliza un inventario simulado.
+**English:** in the Extended workshop the language toggle now also translates Building, Farming and Scavenging, and opening it without a selected token no longer shows a window with dead buttons: it falls back to your assigned character, or warns you to select a token.
 
-Candidato en borrador: faltan mundos reales de Foundry v13/v14, GM y jugador, y autenticación Patreon real. Véase `docs/VISUAL-QA.md`.
+Ocho pruebas locales aprobadas, comprobación de sintaxis/recursos y empaquetado reproducible. No se ha ejecutado un mundo real de Foundry v13 para esta versión.
 
-Archivos: `redvelvet-crafting-pf2e.zip`, `module.json` y `SHA256SUMS.txt`. El enlace estable de instalación estará disponible tras publicar la release.
+**Compatibilidad:** Foundry v13 como mínimo y 14.999 como máximo.
+
+Archivos: `redvelvet-crafting-pf2e.zip`, `module.json` y `SHA256SUMS.txt`. Manifiesto de instalación: `https://github.com/gmredvelvet-rgb/redvelvet-crafting-pf2e/releases/latest/download/module.json`.

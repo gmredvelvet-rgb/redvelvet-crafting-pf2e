@@ -1481,7 +1481,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
     html.find("#rv-category-screen h2").text(S.catTitle);
     html.find("#rv-category-screen .subtitle").text(S.catSubtitle);
     html.find("#rv-lang-toggle").text(S.langToggle);
-    ["herreria", "alquimia", "joyeria", "trabajo-con-piel", "equipo-vario", "recoleccion", "construcciones", "reciclaje", "reglas"].forEach((cat) => {
+    Object.keys(S.cats).forEach((cat) => {
       html.find(`.rv-cat-btn[data-category="${cat}"] .cat-label`).text(S.cats[cat]);
     });
     html.find("#rv-btn-back-forge").text(S.backMenu);
@@ -1577,7 +1577,11 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
   }
 
   // ─────────────────────────────────────────────────────────────────────────────
-  function openCraftingDialog() {
+  function openCraftingDialog(options = {}) {
+    // Checked before the window exists: a workshop without an actor has no working buttons.
+    const actor = options.actor ?? globalThis.canvas?.tokens?.controlled?.[0]?.actor ?? game.user.character;
+    if (!actor) return void ui.notifications.warn(STRINGS[currentLang].notifyNoToken);
+    if (game.system.id !== "pf2e") return void ui.notifications.warn(STRINGS[currentLang].notifyNoSystem);
     // v13+ keeps the V1 dialog under foundry.appv1; the bare global is deprecated.
     const LegacyDialog = globalThis.foundry?.appv1?.api?.Dialog ?? globalThis.Dialog;
     let craftingDialog = new LegacyDialog({
@@ -3066,19 +3070,6 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
           maxWidth: "calc(100vw - 24px)",
           maxHeight: "calc(100vh - 48px)",
         });
-
-        // ── Verificar actor seleccionado ──
-        const actor = canvas.tokens?.controlled[0]?.actor;
-        if (!actor) {
-          ui.notifications.warn(STRINGS[currentLang].notifyNoToken);
-          return;
-        }
-
-        // ── Verificar que sea PF2e ──
-        if (game.system.id !== "pf2e") {
-          ui.notifications.warn(STRINGS[currentLang].notifyNoSystem);
-          return;
-        }
 
         // ── Aplicar idioma inicial ──
         applyLang(html); applyWorkshopIcons(html);
@@ -5045,7 +5036,7 @@ import { MODES, craftingMode, registerCoreMode, openCore, coinsFor } from "./cor
 
   /** Opens the workshop the GM chose in the settings; `options.mode` forces one. */
   function openCrafting(options = {}) {
-    return (options.mode ?? craftingMode(MODULE_ID)) === MODES.EXTENDED ? openCraftingDialog() : openCore(coreAdapter, options);
+    return (options.mode ?? craftingMode(MODULE_ID)) === MODES.EXTENDED ? openCraftingDialog(options) : openCore(coreAdapter, options);
   }
 
   // ── Exponer globalmente y registrar comando de chat ──
